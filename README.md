@@ -15,11 +15,15 @@
 
 สร้างแพ็กเกจ Python พร้อม source layout แล้วเพิ่ม dependencies:
 
-```powershell
+```cmd
 uv init --package --python 3.14 e2e-robot-project
-cd e2e-robot-project
+cd /d e2e-robot-project
 uv add robotframework robotframework-seleniumlibrary openpyxl pyyaml
-New-Item -ItemType Directory tests, resources, config, data, results
+mkdir tests
+mkdir resources
+mkdir config
+mkdir data
+mkdir results
 ```
 
 จัดไฟล์ให้อยู่ในตำแหน่งที่อ่านและดูแลต่อได้:
@@ -78,13 +82,13 @@ Run Rows From Test Data
 
 Lab นี้มี `generate_test_data.py` สำหรับสร้างไฟล์ Excel ตัวอย่าง:
 
-```powershell
+```cmd
 uv run python generate_test_data.py
 ```
 
 ## ติดตั้งและรันโปรเจกต์นี้
 
-```powershell
+```cmd
 uv sync
 uv run python generate_test_data.py
 uv run robot --outputdir results tests
@@ -108,7 +112,7 @@ uv run robot --outputdir results tests
 
 ### คำสั่งที่ใช้บ่อย
 
-```powershell
+```cmd
 uv sync
 uv run python generate_test_data.py          # สร้าง/เขียนทับ data/test_data.xlsx จากสคริปต์
 uv run robot --outputdir results tests
@@ -132,3 +136,4 @@ uv run robot --outputdir results tests/test_saucedemo.robot
 - [openpyxl documentation](https://openpyxl.readthedocs.io/en/stable/)
 - [PyYAML documentation](https://pyyaml.org/wiki/PyYAMLDocumentation)
 - [uv: Working on projects](https://docs.astral.sh/uv/guides/projects/)
+
