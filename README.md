@@ -16,8 +16,9 @@
 สร้างแพ็กเกจ Python พร้อม source layout แล้วเพิ่ม dependencies:
 
 ```cmd
-uv init --package --python 3.14 e2e-robot-project
+mkdir e2e-robot-project
 cd /d e2e-robot-project
+uv init
 uv add robotframework robotframework-seleniumlibrary openpyxl pyyaml
 mkdir tests
 mkdir resources
@@ -114,7 +115,7 @@ uv run robot --outputdir results tests
 
 ```cmd
 uv sync
-uv run python generate_test_data.py          # สร้าง/เขียนทับ data/test_data.xlsx จากสคริปต์
+uv run generate_test_data.py                 # สร้าง/เขียนทับ data/test_data.xlsx จากสคริปต์
 uv run robot --outputdir results tests
 uv run robot --outputdir results tests/test_saucedemo.robot
 ```
