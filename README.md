@@ -99,3 +99,36 @@ uv run robot --outputdir results tests
 - ใช้ teardown สำหรับปิด browser แม้ scenario จะ fail
 - ออกแบบข้อมูลให้ครอบคลุมกรณีปกติและกรณีผิดพลาด โดยผลที่คาดหวังชัดเจน
 - เก็บผลลัพธ์การรันในโฟลเดอร์ที่ไม่ปะปนกับ source code
+
+## เปิดดูระหว่างสอบ: ทางลัดและภาพรวมไฟล์นี้
+
+แยกโจทย์เป็น 4 จุด: **ข้อมูลทดสอบ → setup → ขั้นตอน → expected result**. ใน Robot ให้ test case เรียก keyword ระดับสูง, ส่ง row/dictionary เป็น argument และใช้ `FOR` เมื่อทดสอบ flow เดิมกับหลายชุดข้อมูล. ให้ `IF/ELSE` เฉพาะกรณีที่ต้องเดิน flow ต่างกัน
+
+ในไฟล์ปัจจุบัน `tests/test_saucedemo.robot` มี test case `Run All Scenarios Data-Driven`: อ่านข้อมูลจาก Excel แล้ววนรัน scenario ผ่าน `Run Scenario According To Data`. ไฟล์ Excel ที่สร้างได้มีตัวอย่าง 4 กรณี: สำเร็จแบบ 1 รายการ, สำเร็จหลายรายการ, ผู้ใช้ถูกล็อก และกรอกข้อมูลไม่ครบ โครงสร้างนี้แสดงวิธีแยกข้อมูลออกจาก test flow; เมื่อนำไปใช้กับโจทย์อื่น ให้เปลี่ยนคอลัมน์/keyword ให้ตรงความต้องการ
+
+### คำสั่งที่ใช้บ่อย
+
+```powershell
+uv sync
+uv run python generate_test_data.py          # สร้าง/เขียนทับ data/test_data.xlsx จากสคริปต์
+uv run robot --outputdir results tests
+uv run robot --outputdir results tests/test_saucedemo.robot
+```
+
+หากไม่ต้องการสร้างไฟล์ Excel ใหม่ ให้ข้ามคำสั่ง generate เพื่อเก็บข้อมูลที่แก้ไขไว้ รายงานอยู่ใน `results/`
+
+### เมื่อเจอปัญหา
+
+- ไม่พบไฟล์ข้อมูล: รัน generator จาก root ของโปรเจกต์ และตรวจ path/ชื่อไฟล์
+- อ่าน Excel ไม่ได้: ตรวจว่ามี header แถวแรกและชื่อ column ตรงกับ key ที่ test เรียก
+- อ่าน YAML ไม่ได้: ตรวจ indentation และ dotted key เช่น `env.url`
+- browser flow แตกต่างตามข้อมูล: ตรวจเงื่อนไขใน keyword และ expected result ของแต่ละ row
+
+### เอกสารอ้างอิงขณะสอบ
+
+- [Robot Framework User Guide: data-driven tests and test data](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html)
+- [Robot Framework: Variables](https://docs.robotframework.org/docs/variables)
+- [Robot Framework: Writing your first test](https://docs.robotframework.org/docs/getting_started/how_to_write_rf)
+- [openpyxl documentation](https://openpyxl.readthedocs.io/en/stable/)
+- [PyYAML documentation](https://pyyaml.org/wiki/PyYAMLDocumentation)
+- [uv: Working on projects](https://docs.astral.sh/uv/guides/projects/)
